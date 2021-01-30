@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pokedex</title>
+	</head>
+	<body>
+		<ul>
+			{{range .Pokemons}}	<li><a href="{{ .Path }}">{{ .Name }}</a></li> {{end}}
+		</ul>
+	</body>
+</html>
