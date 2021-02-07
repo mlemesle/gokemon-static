@@ -16,7 +16,7 @@ type GenderRates struct {
 	MaleRate   float32
 }
 
-type PokemonIdentityCardS struct {
+type PokemonCardS struct {
 	Order              int
 	NameFR             string
 	NameEN             string
@@ -38,8 +38,8 @@ type PokemonIdentityCardS struct {
 }
 
 type PokemonS struct {
-	Name                string
-	PokemonIdentityCard *PokemonIdentityCardS
+	Name        string
+	PokemonCard *PokemonCardS
 }
 
 func (p *PokemonS) Build(pokemonName string) error {
@@ -183,7 +183,7 @@ func (p *PokemonS) fillIdentityCardFields(pokemonName string) error {
 	}
 
 	p.Name = nameFR
-	p.PokemonIdentityCard = &PokemonIdentityCardS{
+	p.PokemonCard = &PokemonCardS{
 		Order:              pokemon.Order,
 		NameFR:             nameFR,
 		NameEN:             nameEN,

@@ -30,7 +30,7 @@ func generatePokemon(pokemonName, basePath string) (*bld.GokemonPartS, error) {
 		log.Printf("Couldn't generate %s.\nError is : %v", pokemonPath, err)
 	}
 	return &bld.GokemonPartS{
-		Order: pokemonS.PokemonIdentityCard.Order,
+		Order: pokemonS.PokemonCard.Order,
 		Name:  pokemonS.Name,
 		Path:  relativePokemonPath,
 	}, nil
