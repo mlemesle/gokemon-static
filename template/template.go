@@ -2,20 +2,21 @@ package template
 
 import (
 	"fmt"
-	"github.com/markbates/pkger"
-	"github.com/mlemesle/gokemon-static/builder"
 	"html/template"
 	"io"
 	"io/ioutil"
 	"os"
 	p "path"
 	"strings"
+
+	"github.com/markbates/pkger"
+	"github.com/mlemesle/gokemon-static/builder"
 )
 
 var templates *template.Template = template.New("")
 
-func InitTemplates(templatesDir string) {
-	pkger.Walk(templatesDir, func(path string, info os.FileInfo, err error) error {
+func InitTemplates(templatesDir string) error {
+	return pkger.Walk(templatesDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			panic(err)
 		}
@@ -30,7 +31,10 @@ func InitTemplates(templatesDir string) {
 		pathParts := strings.Split(path, "/")
 		filename := pathParts[len(pathParts)-1]
 		templateName := strings.TrimSuffix(filename, p.Ext(filename))
-		templates.New(templateName).Parse(string(sl))
+
+		if _, err := templates.New(templateName).Parse(string(sl)); err != nil {
+			return err
+		}
 		return nil
 	})
 }

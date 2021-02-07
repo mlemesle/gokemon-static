@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Pokedex</title>
-	</head>
+	{{ template "head" "Gokémon"}}
 	<body>
-		<ul>
-			{{range .Pokemons}}	<li><a href="{{ .Path }}">{{ .Name }}</a></li> {{end}}
-		</ul>
+		<div id="content">
+			<ul>
+				{{range .Pokemons}}	<li><a href="{{ .Path }}">{{ .Name }}</a></li> {{end}}
+			</ul>
+		</div>
 	</body>
 </html>

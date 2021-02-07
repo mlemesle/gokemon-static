@@ -2,10 +2,11 @@ package generator
 
 import (
 	"fmt"
+	"os"
+
 	bld "github.com/mlemesle/gokemon-static/builder"
 	tpl "github.com/mlemesle/gokemon-static/template"
 	"github.com/mtslzr/pokeapi-go"
-	"os"
 )
 
 const gokemonFilepath string = "/gokemon.html"
@@ -41,7 +42,7 @@ func GenerateGokemon(basePath string) error {
 	var pokemons []bld.GokemonPartS
 	nbPokemons := len(pokemonNames)
 	fmt.Println(fmt.Sprintf("Preparing to export %d pokemons", nbPokemons))
-	for i, pokemonName := range pokemonNames[:5] {
+	for i, pokemonName := range pokemonNames[:6] {
 		fmt.Println(fmt.Sprintf("%d/%d", i+1, nbPokemons))
 		gokemonPartS, err := generatePokemon(pokemonName, basePath)
 		if err != nil {

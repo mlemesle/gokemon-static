@@ -1,0 +1,92 @@
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-8">
+      <div class="card-body">
+		<table class="table">
+  			<tbody>
+  				<tr>
+  					<th scope="row">Nom</th>
+  			    	<td>{{.NameFR}} (anglais: <strong>{{.NameEN}}</strong>, japonais: <strong>{{.NameJP}}</strong>)</td>
+  			  	</tr>
+				<tr>
+  			    	<th scope="row">Types</th>
+  			    	<td>{{range .Types}}<img src="{{.}}" class="type">{{end}}</td>
+  			  	</tr>
+				<tr>
+  			    	<th scope="row">Catégorie</th>
+  			    	<td>{{.Gender}}</td>
+  			  	</tr>
+				<tr>
+					<th scope="row">Taille</th>
+					<td>{{.Height}}m</td>
+				</tr>
+				<tr>
+					<th scope="row">Poids</th>
+					<td>{{.Weight}}kg</td>
+				</tr>
+				<tr>
+					<th scope="row">Talents</th>
+					<td>
+						<ol>
+							{{range .Abilities}}<li>{{.}}</li>{{end}}
+						</ol>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Groupe œuf</th>
+					<td>
+						<ol>
+							{{range .EggGroups}}<li>{{.}}</li>{{end}}
+						</ol>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Éclosion</th>
+					<td>{{.StepsUntilHatch}} pas</td>
+				</tr>
+				<tr>
+					<th scope="row">Points effort</th>
+					<td>
+						<ul>
+							{{range $statName, $statValue := .EffortPoints}}<li>+{{$statValue}} {{$statName}}</li>{{end}}
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Points exp</th>
+					<td>{{.BaseExperience}} exp</td>
+				</tr>
+				<tr>
+					<th scope="row">Points exp niveau 100</th>
+					<td>{{.Level100Experience}} exp</td>
+				</tr>
+				<tr>
+					<th scope="row">Sexe</th>
+					<td>
+					{{with .GenderRates}} 
+					<div class="progress">
+  						<div class="progress-bar bg-female" role="progressbar" style="width: {{.FemaleRate}}%" aria-valuenow="{{.FemaleRate}}" aria-valuemin="0" aria-valuemax="100">{{.FemaleRate}}%</div>
+  						<div class="progress-bar bg-male" role="progressbar" style="width: {{.MaleRate}}%" aria-valuenow="{{.MaleRate}}" aria-valuemin="{{.FemaleRate}}" aria-valuemax="100">{{.MaleRate}}%</div>
+					</div>
+					{{else}} 
+					Assexué
+					{{end}}
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Couleur</th>
+					<td>{{.Color}}</td>
+				</tr>
+				<tr>
+					<th scope="row">Taux de capture</th>
+					<td>{{.CaptureRate}}</td>
+				</tr>
+			</tbody>
+		</table>
+      </div>
+    </div>
+	<div class="col-md-4">
+      <img src="{{.ArtworkURL}}" class="card-img" alt="Artwork de {{.NameFR}}">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+body {
+    width: 100%;
+}
+
+#content {
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+img.type {
+    width: 85px;
+    height: 19px;
+    margin: 0px 4px;
+}
+
+table ol, table ul {
+    margin-bottom: 0px;
+}
+
+.bg-male {
+    background-color: rgb(19, 116, 226) !important;
+}
+
+.bg-female {
+    background-color: rgb(236, 152, 152);
+}

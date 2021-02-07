@@ -2,10 +2,11 @@ package generator
 
 import (
 	"fmt"
-	bld "github.com/mlemesle/gokemon-static/builder"
-	tpl "github.com/mlemesle/gokemon-static/template"
 	"log"
 	"os"
+
+	bld "github.com/mlemesle/gokemon-static/builder"
+	tpl "github.com/mlemesle/gokemon-static/template"
 )
 
 const pokemonsDir string = "pokemons"
@@ -16,7 +17,7 @@ func GetPokemonDir(basePath string) string {
 }
 
 func generatePokemon(pokemonName, basePath string) (*bld.GokemonPartS, error) {
-	pokemonS := &bld.PokemonS{}
+	pokemonS := bld.PokemonS{}
 	pokemonS.Build(pokemonName)
 	relativePokemonPath := fmt.Sprintf(pokemonsDir+pokemonFilepathFormat, pokemonName)
 	pokemonPath := basePath + relativePokemonPath
@@ -25,11 +26,11 @@ func generatePokemon(pokemonName, basePath string) (*bld.GokemonPartS, error) {
 		log.Printf("Couldn't create file %s.\nError is : %v", pokemonPath, err)
 	}
 	defer pokemonFile.Close()
-	if err := tpl.GeneratePokemon(pokemonFile, *pokemonS); err != nil {
+	if err := tpl.GeneratePokemon(pokemonFile, pokemonS); err != nil {
 		log.Printf("Couldn't generate %s.\nError is : %v", pokemonPath, err)
 	}
 	return &bld.GokemonPartS{
-		Order: pokemonS.Order,
+		Order: pokemonS.PokemonIdentityCard.Order,
 		Name:  pokemonS.Name,
 		Path:  relativePokemonPath,
 	}, nil
