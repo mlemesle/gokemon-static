@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
-	{{ template "head" .PokemonCard.NameFR }}
+	{{template "head" .PokemonCard.NameEN}}
 	<body>
 		<div id="content">
-			{{ template "card" .PokemonCard }}
+			{{template "card" .PokemonCard}}
+
+			{{template "descriptions" .PokemonDescriptions}}
 		</div>
 	</body>
 </html>

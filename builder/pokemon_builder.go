@@ -37,17 +37,32 @@ type PokemonCardS struct {
 	ArtworkURL         string
 }
 
+type pokemonDescriptionKeyS struct {
+	GenerationName   string
+	GenerationNameEN string
+}
+
+type PokemonDescriptionsS struct {
+	DescriptionAndGameNameByGeneration map[pokemonDescriptionKeyS]map[string]string
+}
+
 type PokemonS struct {
-	Name        string
-	PokemonCard *PokemonCardS
+	Name                string
+	PokemonCard         *PokemonCardS
+	PokemonDescriptions *PokemonDescriptionsS
 }
 
 func (p *PokemonS) Build(pokemonName string) error {
-	if err := p.fillIdentityCardFields(pokemonName); err != nil {
+	if err := p.fillCardFields(pokemonName); err != nil {
+		return err
+	}
+	if err := p.fillDescriptionsFields(pokemonName); err != nil {
 		return err
 	}
 	return nil
 }
+
+// PokemonCardS
 
 func extractTypes(p *structs.Pokemon) []string {
 	result := make([]string, len(p.Types))
@@ -64,7 +79,7 @@ func extractAbilities(p *structs.Pokemon) ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		result[i] = extractFRName(ability.Names)
+		result[i] = extractENName(ability.Names)
 	}
 	return result, nil
 }
@@ -76,7 +91,7 @@ func extractEggGroups(p *structs.PokemonSpecies) ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		result[i] = extractFRName(eggGroup.Names)
+		result[i] = extractENName(eggGroup.Names)
 	}
 	return result, nil
 }
@@ -89,7 +104,7 @@ func extractEffortPoints(p *structs.Pokemon) (map[string]int, error) {
 			if err != nil {
 				return nil, err
 			}
-			result[extractFRName(stat.Names)] = s.Effort
+			result[extractENName(stat.Names)] = s.Effort
 		}
 	}
 	return result, nil
@@ -115,10 +130,10 @@ func extractColorName(p *structs.PokemonSpecies) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return extractFRName(pokemonColor.Names), nil
+	return extractENName(pokemonColor.Names), nil
 }
 
-func (p *PokemonS) fillIdentityCardFields(pokemonName string) error {
+func (p *PokemonS) fillCardFields(pokemonName string) error {
 	pokemon, err := pokeapi.Pokemon(pokemonName)
 	if err != nil {
 		return err
@@ -148,7 +163,7 @@ func (p *PokemonS) fillIdentityCardFields(pokemonName string) error {
 
 	gender := ""
 	for _, g := range pokemonSpecie.Genera {
-		if g.Language.Name == "fr" {
+		if g.Language.Name == "en" {
 			gender = g.Genus
 			break
 		}
@@ -182,7 +197,7 @@ func (p *PokemonS) fillIdentityCardFields(pokemonName string) error {
 		return err
 	}
 
-	p.Name = nameFR
+	p.Name = nameEN
 	p.PokemonCard = &PokemonCardS{
 		Order:              pokemon.Order,
 		NameFR:             nameFR,
@@ -202,6 +217,50 @@ func (p *PokemonS) fillIdentityCardFields(pokemonName string) error {
 		Height:             float32(pokemon.Height) / 10,
 		Weight:             float32(pokemon.Weight) / 10,
 		Types:              extractTypes(&pokemon),
+	}
+	return nil
+}
+
+// PokemonDescriptions
+func (p *PokemonS) fillDescriptionsFields(pokemonName string) error {
+	pokemon, err := pokeapi.Pokemon(pokemonName)
+	if err != nil {
+		return err
+	}
+	pokemonSpecie, err := pokeapi.PokemonSpecies(pokemon.Species.Name)
+	if err != nil {
+		return err
+	}
+
+	descriptionAndGameNameByGeneration := make(map[pokemonDescriptionKeyS]map[string]string)
+
+	for _, flavorTextEntry := range pokemonSpecie.FlavorTextEntries {
+		if flavorTextEntry.Language.Name == "en" {
+			version, err := pokeapi.Version(flavorTextEntry.Version.Name)
+			if err != nil {
+				return err
+			}
+			versionGroup, err := pokeapi.VersionGroup(version.VersionGroup.Name)
+			if err != nil {
+				return err
+			}
+			generation, err := pokeapi.Generation(versionGroup.Generation.Name)
+			if err != nil {
+				return err
+			}
+			key := pokemonDescriptionKeyS{
+				GenerationName:   generation.Name,
+				GenerationNameEN: extractENName(generation.Names),
+			}
+			if _, ok := descriptionAndGameNameByGeneration[key]; !ok {
+				descriptionAndGameNameByGeneration[key] = make(map[string]string)
+			}
+			descriptionAndGameNameByGeneration[key][getVersionNameEN(version.Name, version.Names)] += " " + flavorTextEntry.FlavorText
+		}
+	}
+
+	p.PokemonDescriptions = &PokemonDescriptionsS{
+		DescriptionAndGameNameByGeneration: descriptionAndGameNameByGeneration,
 	}
 	return nil
 }

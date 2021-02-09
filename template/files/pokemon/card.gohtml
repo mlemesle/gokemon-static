@@ -5,27 +5,27 @@
 		<table class="table">
   			<tbody>
   				<tr>
-  					<th scope="row">Nom</th>
-  			    	<td>{{.NameFR}} (anglais: <strong>{{.NameEN}}</strong>, japonais: <strong>{{.NameJP}}</strong>)</td>
+  					<th scope="row">Name</th>
+  			    	<td>{{.NameEN}} (french: <strong>{{.NameFR}}</strong>, japanese: <strong>{{.NameJP}}</strong>)</td>
   			  	</tr>
 				<tr>
   			    	<th scope="row">Types</th>
   			    	<td>{{range .Types}}<img src="{{.}}" class="type">{{end}}</td>
   			  	</tr>
 				<tr>
-  			    	<th scope="row">Catégorie</th>
+  			    	<th scope="row">Category</th>
   			    	<td>{{.Gender}}</td>
   			  	</tr>
 				<tr>
-					<th scope="row">Taille</th>
+					<th scope="row">Height</th>
 					<td>{{.Height}}m</td>
 				</tr>
 				<tr>
-					<th scope="row">Poids</th>
+					<th scope="row">Weight</th>
 					<td>{{.Weight}}kg</td>
 				</tr>
 				<tr>
-					<th scope="row">Talents</th>
+					<th scope="row">Abilities</th>
 					<td>
 						<ol>
 							{{range .Abilities}}<li>{{.}}</li>{{end}}
@@ -33,7 +33,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th scope="row">Groupe œuf</th>
+					<th scope="row">Egg group</th>
 					<td>
 						<ol>
 							{{range .EggGroups}}<li>{{.}}</li>{{end}}
@@ -41,11 +41,11 @@
 					</td>
 				</tr>
 				<tr>
-					<th scope="row">Éclosion</th>
-					<td>{{.StepsUntilHatch}} pas</td>
+					<th scope="row">Hatch</th>
+					<td>{{.StepsUntilHatch}} steps</td>
 				</tr>
 				<tr>
-					<th scope="row">Points effort</th>
+					<th scope="row">Effort points</th>
 					<td>
 						<ul>
 							{{range $statName, $statValue := .EffortPoints}}<li>+{{$statValue}} {{$statName}}</li>{{end}}
@@ -53,15 +53,15 @@
 					</td>
 				</tr>
 				<tr>
-					<th scope="row">Points exp</th>
+					<th scope="row">Exp. points</th>
 					<td>{{.BaseExperience}} exp</td>
 				</tr>
 				<tr>
-					<th scope="row">Points exp niveau 100</th>
+					<th scope="row">Exp. points lvl 100</th>
 					<td>{{.Level100Experience}} exp</td>
 				</tr>
 				<tr>
-					<th scope="row">Sexe</th>
+					<th scope="row">Gender</th>
 					<td>
 					{{with .GenderRates}} 
 					<div class="progress">
@@ -69,16 +69,16 @@
   						<div class="progress-bar bg-male" role="progressbar" style="width: {{.MaleRate}}%" aria-valuenow="{{.MaleRate}}" aria-valuemin="{{.FemaleRate}}" aria-valuemax="100">{{.MaleRate}}%</div>
 					</div>
 					{{else}} 
-					Assexué
+					Assexual
 					{{end}}
 					</td>
 				</tr>
 				<tr>
-					<th scope="row">Couleur</th>
+					<th scope="row">Color</th>
 					<td>{{.Color}}</td>
 				</tr>
 				<tr>
-					<th scope="row">Taux de capture</th>
+					<th scope="row">Capture rate</th>
 					<td>{{.CaptureRate}}</td>
 				</tr>
 			</tbody>

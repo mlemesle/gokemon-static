@@ -42,7 +42,7 @@ func GenerateGokemon(basePath string) error {
 	var pokemons []bld.GokemonPartS
 	nbPokemons := len(pokemonNames)
 	fmt.Println(fmt.Sprintf("Preparing to export %d pokemons", nbPokemons))
-	for i, pokemonName := range pokemonNames[:6] {
+	for i, pokemonName := range pokemonNames {
 		fmt.Println(fmt.Sprintf("%d/%d", i+1, nbPokemons))
 		gokemonPartS, err := generatePokemon(pokemonName, basePath)
 		if err != nil {
