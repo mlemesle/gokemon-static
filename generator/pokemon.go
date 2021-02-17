@@ -17,7 +17,7 @@ func GetPokemonDir(basePath string) string {
 }
 
 func generatePokemon(pokemonName, basePath string) (*bld.GokemonPartS, error) {
-	pokemonS := bld.PokemonS{}
+	pokemonS := bld.NewPokemonS()
 	pokemonS.Build(pokemonName)
 	relativePokemonPath := fmt.Sprintf(pokemonsDir+pokemonFilepathFormat, pokemonName)
 	pokemonPath := basePath + relativePokemonPath

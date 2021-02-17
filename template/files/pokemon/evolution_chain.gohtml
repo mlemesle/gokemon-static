@@ -1,0 +1,19 @@
+<div class="card mb-3">
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <tbody>
+        {{range $row := .Grid}}
+        <tr>
+          {{range $cell := $row}}
+          {{with $cell}}
+          <td rowspan="{{.RowSpan}}">
+            <img src="{{.ArtworkURL}}" alt="Artwork of {{.Name}}"><div class="d-inline-block text-wrap w-50 ml-3"><strong>{{.Name}}</strong>{{if .EvolutionMethod}} - <em>{{.EvolutionMethod}}</em>{{end}}</div>
+          </td>
+          {{end}}
+          {{end}}
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</div>

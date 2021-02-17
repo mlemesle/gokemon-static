@@ -1,5 +1,15 @@
 package builder
 
+import (
+	"fmt"
+	"strings"
+)
+
+type namedResource struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+}
+
 func extractLangName(lang string, names []struct {
 	Language struct {
 		Name string `json:"name"`
@@ -118,6 +128,39 @@ func getVersionNameEN(versionName string, names []struct {
 	default:
 		return "Unknow version"
 	}
+}
+
+func extractNameFromInterface(x interface{}) string {
+	tmp := x.(map[string]interface{})
+	return tmp["name"].(string)
+}
+
+func getGenderNameFromID(id string) string {
+	return strings.Title(id)
+}
+
+func getIDFromURL(url string) string {
+	parts := strings.Split(url, "/")
+	return parts[len(parts)-2]
+}
+
+const officialArtworkFormat string = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/%d.png"
+
+func getArtworkURLFromID(id int) string {
+	return fmt.Sprintf(officialArtworkFormat, id)
+}
+
+const typeAssetFormat string = "/assets/images/types/%s.png"
+
+func getTypePictoURL(typeName string) string {
+	return fmt.Sprintf(typeAssetFormat, typeName)
+}
+
+func xOr1(x int) int {
+	if x != 0 {
+		return x
+	}
+	return 1
 }
 
 /*

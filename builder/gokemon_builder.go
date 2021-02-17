@@ -7,9 +7,13 @@ type GokemonPartS struct {
 }
 
 type GokemonS struct {
-	Pokemons []GokemonPartS
+	Pokemons []*GokemonPartS
 }
 
-func (g *GokemonS) Build(pokemons []GokemonPartS) {
+func NewGokemonS() *GokemonS {
+	return &GokemonS{}
+}
+
+func (g *GokemonS) Build(pokemons []*GokemonPartS) {
 	g.Pokemons = pokemons
 }

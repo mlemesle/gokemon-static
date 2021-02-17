@@ -3,7 +3,7 @@ body {
 }
 
 #content {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -23,4 +23,8 @@ table ol, table ul {
 
 .bg-female {
     background-color: rgb(236, 152, 152);
+}
+
+table td img {
+    max-height: 200px;
 }

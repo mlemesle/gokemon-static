@@ -39,10 +39,10 @@ func InitTemplates(templatesDir string) error {
 	})
 }
 
-func GenerateGokemon(file io.Writer, g builder.GokemonS) error {
+func GenerateGokemon(file io.Writer, g *builder.GokemonS) error {
 	return templates.ExecuteTemplate(file, "gokemon", g)
 }
 
-func GeneratePokemon(file io.Writer, p builder.PokemonS) error {
+func GeneratePokemon(file io.Writer, p *builder.PokemonS) error {
 	return templates.ExecuteTemplate(file, "pokemon", p)
 }

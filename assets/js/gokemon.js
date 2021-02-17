@@ -7,4 +7,8 @@ $( document ).ready(function() {
         targetDescription.removeClass('collapse');
         targetDescription.addClass('collapse.show');
     });
+
+    var firstDescription = $("#descriptionsContainer .collapse").first();
+    firstDescription.removeClass('collapse');
+    firstDescription.addClass('collapse.show');
 });

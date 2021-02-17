@@ -35,11 +35,12 @@ func GetGokemonDir(basePath string) string {
 }
 
 func GenerateGokemon(basePath string) error {
-	pokemonNames, err := getAllPokemonNames()
+	/*pokemonNames, err := getAllPokemonNames()
 	if err != nil {
 		return err
-	}
-	var pokemons []bld.GokemonPartS
+	}*/
+	pokemonNames := []string{"bulbasaur", "eevee", "ralts"}
+	var pokemons []*bld.GokemonPartS
 	nbPokemons := len(pokemonNames)
 	fmt.Println(fmt.Sprintf("Preparing to export %d pokemons", nbPokemons))
 	for i, pokemonName := range pokemonNames {
@@ -48,14 +49,14 @@ func GenerateGokemon(basePath string) error {
 		if err != nil {
 			return err
 		}
-		pokemons = append(pokemons, *gokemonPartS)
+		pokemons = append(pokemons, gokemonPartS)
 	}
 	gokemonFile, err := os.Create(GetGokemonDir(basePath) + gokemonFilepath)
 	if err != nil {
 		return err
 	}
 	defer gokemonFile.Close()
-	gokemon := &bld.GokemonS{}
+	gokemon := new(bld.GokemonS)
 	gokemon.Build(pokemons)
-	return tpl.GenerateGokemon(gokemonFile, *gokemon)
+	return tpl.GenerateGokemon(gokemonFile, gokemon)
 }
