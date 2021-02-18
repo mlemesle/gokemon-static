@@ -19,6 +19,8 @@ type PokemonEvolutionCellS struct {
 	RowSpan         int
 }
 
+var pokemonEvolutionGridMap map[string]*PokemonEvolutionGridS = make(map[string]*PokemonEvolutionGridS)
+
 func NewPokemonEvolutionGridS() *PokemonEvolutionGridS {
 	return &PokemonEvolutionGridS{
 		Grid: nil,
@@ -191,7 +193,13 @@ func (p *PokemonEvolutionGridS) Build(pokemonName string) error {
 	if err != nil {
 		return err
 	}
-	evolutionChain, err := pokeapi.EvolutionChain(getIDFromURL(pokemonSpecie.EvolutionChain.URL))
+	evolutionChainID := getIDFromURL(pokemonSpecie.EvolutionChain.URL)
+	if pokemonEvolutionGrid, ok := pokemonEvolutionGridMap[evolutionChainID]; ok && pokemonEvolutionGrid != nil {
+		*p = *pokemonEvolutionGrid
+		return nil
+	}
+
+	evolutionChain, err := pokeapi.EvolutionChain(evolutionChainID)
 	if err != nil {
 		return err
 	}
@@ -202,7 +210,7 @@ func (p *PokemonEvolutionGridS) Build(pokemonName string) error {
 	}
 	totalSubEvolutions = xOr1(totalSubEvolutions)
 
-	*p = *NewPokemonEvolutionGridSWithSize(totalSubEvolutions, 3)
+	tmpGrid := NewPokemonEvolutionGridSWithSize(totalSubEvolutions, 3)
 
 	currentDepth1, currentDepth2 := 0, 0
 	for _, evolveDepth1 := range evolutionChain.Chain.EvolvesTo {
@@ -211,7 +219,7 @@ func (p *PokemonEvolutionGridS) Build(pokemonName string) error {
 			return err
 		}
 		targetDepth1.RowSpan = xOr1(len(evolveDepth1.EvolvesTo))
-		p.Grid[currentDepth1][1] = targetDepth1
+		tmpGrid.Grid[currentDepth1][1] = targetDepth1
 		currentDepth1++
 
 		for _, evolveDepth2 := range evolveDepth1.EvolvesTo {
@@ -219,13 +227,15 @@ func (p *PokemonEvolutionGridS) Build(pokemonName string) error {
 			if err = targetDepth2.Build(evolveDepth2.Species.Name, evolveDepth2.EvolutionDetails); err != nil {
 				return err
 			}
-			p.Grid[currentDepth2][2] = targetDepth2
+			tmpGrid.Grid[currentDepth2][2] = targetDepth2
 			currentDepth2++
 		}
 	}
 	baseEvolution := NewPokemonEvolutionCellS()
 	baseEvolution.Build(pokemonName, nil)
 	baseEvolution.RowSpan = totalSubEvolutions
-	p.Grid[0][0] = baseEvolution
+	tmpGrid.Grid[0][0] = baseEvolution
+	pokemonEvolutionGridMap[evolutionChainID] = tmpGrid
+	*p = *tmpGrid
 	return nil
 }
